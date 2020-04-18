@@ -1,5 +1,6 @@
 package com.taktakci.exchange.service.mapper;
 
+import com.taktakci.exchange.dto.ConversionRequestDto;
 import com.taktakci.exchange.dto.ConversionResponseDto;
 import com.taktakci.exchange.entity.Conversion;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class ConversionMapperTest {
@@ -70,5 +72,20 @@ class ConversionMapperTest {
         assertEquals(123L, dto.getTransactionId());
         assertEquals("USD", dto.getSourceCurrency());
         assertEquals("GBP", dto.getTargetCurrency());
+    }
+
+    @Test
+    void toConversion() {
+        ConversionRequestDto dto = new ConversionRequestDto();
+        dto.setSourceAmount(100L);
+        dto.setSourceCurrency("USD");
+        dto.setTargetCurrency("TRY");
+
+        Conversion conversion = conversionMapper.toConversion(dto);
+
+        assertNotNull(conversion);
+        assertEquals(100L, conversion.getSourceAmount());
+        assertEquals("USD", conversion.getSourceCurrency());
+        assertEquals("TRY", conversion.getTargetCurrency());
     }
 }

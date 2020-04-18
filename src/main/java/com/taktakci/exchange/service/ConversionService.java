@@ -1,5 +1,6 @@
 package com.taktakci.exchange.service;
 
+import com.taktakci.exchange.dto.ConversionRequestDto;
 import com.taktakci.exchange.dto.ConversionResponseDto;
 import com.taktakci.exchange.entity.Conversion;
 import com.taktakci.exchange.logging.LogFactory;
@@ -10,6 +11,7 @@ import com.taktakci.exchange.service.mapper.ConversionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service("convertService")
@@ -24,30 +26,50 @@ public class ConversionService {
     @Autowired
     private ConversionMapper conversionMapper;
 
+    @Autowired
+    private ExchangeRateService exchangeRateService;
+
     private LogUtil logger = LogFactory.getLogger(this.getClass());
 
-    public List<ConversionResponseDto> conversionList(Long transactionId, String transactionDate) {
+    public List<ConversionResponseDto> getByTransactionOrByDate(Long transactionId, String transactionDate) {
 
-        logger.info("conversionList() called with parameters, transactionId={}, transactionDate={}",
+        logger.info("getByTransactionOrByDate() called with parameters, transactionId={}, transactionDate={}",
                 transactionId, transactionDate);
         conversionValidator.validateConversionListParameters(transactionId, transactionDate);
 
-        List<ConversionResponseDto> dtoList;
-        if (transactionId != null) {
-            logger.info("conversionList() calculated by transactionId");
-            Conversion conversion = conversionRepository.findById(transactionId);
-            dtoList = conversionMapper.toConversionResponseDtoList(conversion);
-        } else {
-            logger.info("conversionList() calculated by transactionDate");
-            List<Conversion> conversionList = conversionRepository.findByTransactionDate(transactionDate);
-            dtoList = conversionMapper.toConversionResponseDtoList(conversionList);
-        }
+        List<ConversionResponseDto> dtoList = findConversions(transactionId, transactionDate);
 
-        logger.info("conversionList() returns, dtoList={}", dtoList);
+        logger.info("getByTransactionOrByDate() returns, dtoList={}", dtoList);
         return dtoList;
     }
 
-    public List<ConversionResponseDto> conversionList() {
+    private List<ConversionResponseDto> findConversions(Long transactionId, String transactionDate) {
+        List<ConversionResponseDto> dtoList;
+        if (transactionId != null) {
+            logger.info("findConversions() calculated by transactionId");
+            dtoList = findConversionByTransactionId(transactionId);
+        } else {
+            logger.info("findConversions() calculated by transactionDate");
+            dtoList = findConversionByDate(transactionDate);
+        }
+        return dtoList;
+    }
+
+    private List<ConversionResponseDto> findConversionByDate(String transactionDate) {
+        List<ConversionResponseDto> dtoList;
+        List<Conversion> conversionList = conversionRepository.findByTransactionDate(transactionDate);
+        dtoList = conversionMapper.toConversionResponseDtoList(conversionList);
+        return dtoList;
+    }
+
+    private List<ConversionResponseDto> findConversionByTransactionId(Long transactionId) {
+        List<ConversionResponseDto> dtoList;
+        Conversion conversion = conversionRepository.findById(transactionId);
+        dtoList = conversionMapper.toConversionResponseDtoList(conversion);
+        return dtoList;
+    }
+
+    public List<ConversionResponseDto> getAllConversions() {
 
         logger.info("conversionList() called with no parameter");
 
@@ -56,5 +78,30 @@ public class ConversionService {
 
         logger.info("conversionList() returns, dtoList={}", dtoList);
         return dtoList;
+    }
+
+    public ConversionResponseDto calculateConversion(ConversionRequestDto requestDto) {
+
+        logger.info("getConversion() called, requestDto:{}", requestDto);
+
+        Conversion conversion = calculate(requestDto);
+
+        ConversionResponseDto responseDto = conversionMapper.toConversionResponseDto(conversion);
+
+        logger.info("getConversion() returns, responseDto={}", responseDto);
+        return responseDto;
+    }
+
+    Conversion calculate(ConversionRequestDto requestDto) {
+        double rate = exchangeRateService.getRate(requestDto.getSourceCurrency(), requestDto.getTargetCurrency())
+                .getRate();
+        double targetAmount = requestDto.getSourceAmount() * rate;
+
+        Conversion conversion = conversionMapper.toConversion(requestDto);
+        conversion.setTargetAmount(targetAmount);
+        conversion.setRate(rate);
+        conversion.setTransactionDate(LocalDate.now());
+        conversionRepository.save(conversion);
+        return conversion;
     }
 }

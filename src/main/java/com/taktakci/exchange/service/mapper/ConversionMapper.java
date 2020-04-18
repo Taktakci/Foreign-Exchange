@@ -1,5 +1,6 @@
 package com.taktakci.exchange.service.mapper;
 
+import com.taktakci.exchange.dto.ConversionRequestDto;
 import com.taktakci.exchange.dto.ConversionResponseDto;
 import com.taktakci.exchange.entity.Conversion;
 import org.springframework.stereotype.Service;
@@ -39,4 +40,14 @@ public class ConversionMapper {
         return toConversionResponseDtoList(conversionList);
     }
 
+    public Conversion toConversion(ConversionRequestDto requestDto) {
+        Conversion conversion = new Conversion();
+        if (requestDto != null) {
+            conversion.setSourceAmount(requestDto.getSourceAmount());
+            conversion.setSourceCurrency(requestDto.getSourceCurrency());
+            conversion.setTargetCurrency(requestDto.getTargetCurrency());
+        }
+
+        return conversion;
+    }
 }
