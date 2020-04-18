@@ -1,6 +1,7 @@
 package com.taktakci.exchange.rest.validator;
 
 import com.taktakci.exchange.exception.DateFormatException;
+import com.taktakci.exchange.exception.PageNumberNegativeOrZeroException;
 import com.taktakci.exchange.exception.PathParamNullException;
 import com.taktakci.exchange.exception.TransactionIdNegativeOrZeroException;
 import org.junit.jupiter.api.Assertions;
@@ -16,30 +17,36 @@ class ConversionValidatorTest {
 
     @Test
     void validateConversionListParametersSucceedsWithTransactionId() {
-        conversionValidator.validateConversionListParameters(1L, null);
+        conversionValidator.validateConversionListParameters(1L, null, null);
     }
 
     @Test
     void validateConversionListParametersSucceedsWithDate() {
-        conversionValidator.validateConversionListParameters(null, "2020-01-01");
+        conversionValidator.validateConversionListParameters(null, "2020-01-01", null);
     }
 
     @Test
     void validateConversionListParametersFailsWhenBothParametersAreNull() {
         Assertions.assertThrows(PathParamNullException.class,
-                () -> conversionValidator.validateConversionListParameters(null, null));
+                () -> conversionValidator.validateConversionListParameters(null, null, null));
     }
 
     @Test
-    void validateConversionListParametersFailsWhenTransactioIdNegative() {
+    void validateConversionListParametersFailsWhenTransactionIdNegative() {
         Assertions.assertThrows(TransactionIdNegativeOrZeroException.class,
-                () -> conversionValidator.validateConversionListParameters(-1L, null));
+                () -> conversionValidator.validateConversionListParameters(-1L, null, null));
     }
 
     @Test
     void validateConversionListParametersFailsWhenDateFormatIsWrong() {
         Assertions.assertThrows(DateFormatException.class,
-                () -> conversionValidator.validateConversionListParameters(null, "2020-02-1"));
+                () -> conversionValidator.validateConversionListParameters(null, "2020-02-1", null));
+    }
+
+    @Test
+    void validateConversionListParametersFailsWhenPageNumberNegative() {
+        Assertions.assertThrows(PageNumberNegativeOrZeroException.class,
+                () -> conversionValidator.validateConversionListParameters(1L, null, -1));
     }
 
 }

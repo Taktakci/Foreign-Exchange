@@ -29,9 +29,10 @@ public class ConversionController {
 
     @GetMapping
     public List<ConversionResponseDto> getByTransactionOrByDate(@PathParam("transactionId") Long transactionId,
-                                                      @PathParam("transactionDate") String transactionDate) {
+                                                                @PathParam("transactionDate") String transactionDate,
+                                                                @PathParam("page") Integer page) {
 
-        return convertService.getByTransactionOrByDate(transactionId, transactionDate);
+        return convertService.getByTransactionOrByDate(transactionId, transactionDate, page);
 
     }
 

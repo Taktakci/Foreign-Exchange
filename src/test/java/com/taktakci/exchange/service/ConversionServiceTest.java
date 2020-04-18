@@ -40,14 +40,14 @@ class ConversionServiceTest {
 
     @Test
     void getByTransactionOrByDateGetsByTransactionId() {
-        conversionService.getByTransactionOrByDate(123L, null);
+        conversionService.getByTransactionOrByDate(123L, null, null);
         verify(conversionRepository, times(1)).findById(anyLong());
     }
 
     @Test
     void getByTransactionOrByDateGetsByDate() {
-        conversionService.getByTransactionOrByDate(null, "2020-02-02");
-        verify(conversionRepository, times(1)).findByTransactionDate(anyString());
+        conversionService.getByTransactionOrByDate(null, "2020-02-02", null);
+        verify(conversionRepository, times(1)).findByTransactionDate(anyString(), any());
     }
 
     @Test

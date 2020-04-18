@@ -22,6 +22,8 @@ public class ConversionRepository {
     @Autowired
     EntityManager entityManager;
 
+    private static final int PAGE_SIZE = 10;
+
     public Conversion findById(Long transactionId) {
         return entityManager.find(Conversion.class, transactionId);
     }
@@ -52,9 +54,12 @@ public class ConversionRepository {
 
     }
 
-    public List<Conversion> findByTransactionDate(String transactionDate) {
+    public List<Conversion> findByTransactionDate(String transactionDate, Integer page) {
         LocalDate localDate = stringToLocalDate(transactionDate);
+        int pageNumber = page == null ? 1 : page;
         return entityManager.createQuery("Select c from Conversion c where c.transactionDate = :transactionDate", Conversion.class)
+                .setFirstResult((pageNumber-1) * PAGE_SIZE)
+                .setMaxResults(PAGE_SIZE)
                 .setParameter("transactionDate", localDate)
                 .getResultList();
     }

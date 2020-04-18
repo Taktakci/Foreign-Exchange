@@ -31,7 +31,7 @@ class ConversionRepositoryTest {
 
     @Test
     void findByTransactionDateFindsConversionList() {
-        List<Conversion> conversionList = conversionRepository.findByTransactionDate("2020-04-11");
+        List<Conversion> conversionList = conversionRepository.findByTransactionDate("2020-04-11", null);
 
         assertNotNull(conversionList);
         assertEquals(2, conversionList.size());

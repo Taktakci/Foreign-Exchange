@@ -31,33 +31,33 @@ public class ConversionService {
 
     private LogUtil logger = LogFactory.getLogger(this.getClass());
 
-    public List<ConversionResponseDto> getByTransactionOrByDate(Long transactionId, String transactionDate) {
+    public List<ConversionResponseDto> getByTransactionOrByDate(Long transactionId, String transactionDate, Integer page) {
 
         logger.info("getByTransactionOrByDate() called with parameters, transactionId={}, transactionDate={}",
                 transactionId, transactionDate);
-        conversionValidator.validateConversionListParameters(transactionId, transactionDate);
+        conversionValidator.validateConversionListParameters(transactionId, transactionDate, page);
 
-        List<ConversionResponseDto> dtoList = findConversions(transactionId, transactionDate);
+        List<ConversionResponseDto> dtoList = findConversions(transactionId, transactionDate, page);
 
         logger.info("getByTransactionOrByDate() returns, dtoList={}", dtoList);
         return dtoList;
     }
 
-    private List<ConversionResponseDto> findConversions(Long transactionId, String transactionDate) {
+    private List<ConversionResponseDto> findConversions(Long transactionId, String transactionDate, Integer page) {
         List<ConversionResponseDto> dtoList;
         if (transactionId != null) {
             logger.info("findConversions() calculated by transactionId");
             dtoList = findConversionByTransactionId(transactionId);
         } else {
             logger.info("findConversions() calculated by transactionDate");
-            dtoList = findConversionByDate(transactionDate);
+            dtoList = findConversionByDate(transactionDate, page);
         }
         return dtoList;
     }
 
-    private List<ConversionResponseDto> findConversionByDate(String transactionDate) {
+    private List<ConversionResponseDto> findConversionByDate(String transactionDate, Integer page) {
         List<ConversionResponseDto> dtoList;
-        List<Conversion> conversionList = conversionRepository.findByTransactionDate(transactionDate);
+        List<Conversion> conversionList = conversionRepository.findByTransactionDate(transactionDate, page);
         dtoList = conversionMapper.toConversionResponseDtoList(conversionList);
         return dtoList;
     }
