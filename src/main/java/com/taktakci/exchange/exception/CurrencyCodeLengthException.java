@@ -1,19 +1,14 @@
 package com.taktakci.exchange.exception;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+public class CurrencyCodeLengthException extends BaseException {
 
-@ResponseStatus
-public class CurrencyCodeLengthException extends RuntimeException {
-    private final String currencyCode;
+    private static final ErrorCode errorCode = ErrorCode.CURRENCY_CODE_LEN;
 
-    private CurrencyCodeLengthException(String currencyCode) {this.currencyCode = currencyCode;}
+    private CurrencyCodeLengthException(String currencyCode) {
+        super(errorCode, currencyCode);
+    }
 
     public static CurrencyCodeLengthException create(String currencyCode) {
         return new CurrencyCodeLengthException(currencyCode);
-    }
-
-    @Override
-    public String getMessage() {
-        return "Currency code lenght must be 3: " + currencyCode;
     }
 }

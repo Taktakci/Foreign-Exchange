@@ -1,19 +1,14 @@
 package com.taktakci.exchange.exception;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+public class PathParamNullException extends BaseException {
 
-@ResponseStatus
-public class PathParamNullException extends RuntimeException {
-    private final String inputName;
+    private static final ErrorCode errorCode = ErrorCode.PATH_PARAM_NULL;
 
-    private PathParamNullException(String inputName) {this.inputName = inputName;}
+    private PathParamNullException(String messageDetail) {
+        super(errorCode, messageDetail);
+    }
 
     public static PathParamNullException create(String inputName) {
         return new PathParamNullException(inputName);
-    }
-
-    @Override
-    public String getMessage() {
-        return "Input can't be null: " + inputName;
     }
 }

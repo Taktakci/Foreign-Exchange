@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/conversion")
-public class ConversionController {
+public class ConversionController extends BaseController {
 
     @Autowired
     private ConversionService convertService;

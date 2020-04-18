@@ -12,7 +12,7 @@ import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/rate")
-public class ExchangeRateController {
+public class ExchangeRateController extends BaseController {
 
     @Autowired
     private ExchangeRateService exchangeRateService;

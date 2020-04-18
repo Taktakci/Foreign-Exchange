@@ -1,19 +1,14 @@
 package com.taktakci.exchange.exception;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+public class RatesApiException extends BaseException {
 
-@ResponseStatus
-public class RatesApiException extends RuntimeException {
-    private final String errorMessage;
+    private static final ErrorCode errorCode = ErrorCode.REST_API;
 
-    private RatesApiException(String errorMessage) {this.errorMessage = errorMessage;}
+    private RatesApiException(String errorMessage) {
+        super(errorCode, errorMessage);
+    }
 
     public static RatesApiException create(String errorMessage) {
         return new RatesApiException(errorMessage);
-    }
-
-    @Override
-    public String getMessage() {
-        return "RatesApi exception: " + errorMessage;
     }
 }

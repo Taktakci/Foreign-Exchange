@@ -1,19 +1,14 @@
 package com.taktakci.exchange.exception;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+public class DateFormatException extends BaseException {
 
-@ResponseStatus
-public class DateFormatException extends RuntimeException {
-    private final String dateFormat;
+    private static final ErrorCode errorCode = ErrorCode.DATE_FORMAT;
 
-    private DateFormatException(String dateFormat) {this.dateFormat = dateFormat;}
+    private DateFormatException(String dateFormat) {
+        super(errorCode, dateFormat);
+    }
 
     public static DateFormatException create(String dateFormat) {
         return new DateFormatException(dateFormat);
-    }
-
-    @Override
-    public String getMessage() {
-        return "Date format must be yyyy-mm-dd but found: " + dateFormat;
     }
 }

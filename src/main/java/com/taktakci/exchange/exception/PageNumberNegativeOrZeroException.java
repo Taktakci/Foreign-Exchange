@@ -1,19 +1,14 @@
 package com.taktakci.exchange.exception;
 
-import org.springframework.web.bind.annotation.ResponseStatus;
+public class PageNumberNegativeOrZeroException extends BaseException {
 
-@ResponseStatus
-public class PageNumberNegativeOrZeroException extends RuntimeException {
-    private final Long pageNumber;
+    private static final ErrorCode errorCode = ErrorCode.PAGE_NO_NEGATIVE_OR_ZERO;
 
-    private PageNumberNegativeOrZeroException(Long pageNumber) {this.pageNumber = pageNumber;}
+    private PageNumberNegativeOrZeroException(Long pageNumber) {
+        super(errorCode, pageNumber.toString());
+    }
 
     public static PageNumberNegativeOrZeroException create(Long pageNumber) {
         return new PageNumberNegativeOrZeroException(pageNumber);
-    }
-
-    @Override
-    public String getMessage() {
-        return "pageNumber must be a positive number but found: " + pageNumber;
     }
 }
