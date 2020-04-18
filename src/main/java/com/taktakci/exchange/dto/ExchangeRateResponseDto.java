@@ -29,4 +29,11 @@ public class ExchangeRateResponseDto {
     public void setRate(double rate) {
         this.rate = rate;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("{sourceCurrency: %s, targetCurrency: %s, rate: %s}",
+                this.sourceCurrency, this.targetCurrency, this.rate);
+    }
 }
