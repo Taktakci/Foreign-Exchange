@@ -1,19 +1,19 @@
 package com.taktakci.exchange.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class ConversionRequestDto {
 
-    @NotNull
-    @Size(min=3, max=3)
     private String sourceCurrency;
-    @NotNull
-    @Size(min=3, max=3)
     private String targetCurrency;
-    @NotNull
-    @Size(min=0)
-    private double sourceAmount;
+    private Double sourceAmount;
+
+    public ConversionRequestDto() {
+    }
+
+    public ConversionRequestDto(String sourceCurrency, String targetCurrency, Double sourceAmount) {
+        this.sourceCurrency = sourceCurrency;
+        this.targetCurrency = targetCurrency;
+        this.sourceAmount = sourceAmount;
+    }
 
     public String getSourceCurrency() {
         return sourceCurrency;
@@ -31,11 +31,11 @@ public class ConversionRequestDto {
         this.targetCurrency = targetCurrency;
     }
 
-    public double getSourceAmount() {
+    public Double getSourceAmount() {
         return sourceAmount;
     }
 
-    public void setSourceAmount(double sourceAmount) {
+    public void setSourceAmount(Double sourceAmount) {
         this.sourceAmount = sourceAmount;
     }
 

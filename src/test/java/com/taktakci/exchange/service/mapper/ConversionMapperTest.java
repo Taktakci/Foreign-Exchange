@@ -77,7 +77,7 @@ class ConversionMapperTest {
     @Test
     void toConversion() {
         ConversionRequestDto dto = new ConversionRequestDto();
-        dto.setSourceAmount(100L);
+        dto.setSourceAmount(100d);
         dto.setSourceCurrency("USD");
         dto.setTargetCurrency("TRY");
 

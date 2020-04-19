@@ -1,13 +1,11 @@
 package com.taktakci.exchange.rest.validator;
 
 import com.taktakci.exchange.exception.CurrencyCodeLengthException;
-import com.taktakci.exchange.exception.PathParamNullException;
+import com.taktakci.exchange.exception.ParameterNullException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ExchangeRateValidatorTest {
@@ -22,13 +20,13 @@ class ExchangeRateValidatorTest {
 
     @Test
     void validateCurrenciesFailsWhenSourceIsNull() {
-        Assertions.assertThrows(PathParamNullException.class,
+        Assertions.assertThrows(ParameterNullException.class,
                 () -> exchangeRateValidator.validateCurrencies(null, "GBP"));
     }
 
     @Test
     void validateCurrenciesFailsWhenTargetIsNull() {
-        Assertions.assertThrows(PathParamNullException.class,
+        Assertions.assertThrows(ParameterNullException.class,
                 () -> exchangeRateValidator.validateCurrencies("USD", null));
     }
 

@@ -1,8 +1,8 @@
 package com.taktakci.exchange.exception;
 
 public enum ErrorCode {
-    PATH_PARAM_NULL("0001", "Input can't be null: "),
-    CURRENCY_CODE_LEN("0002", "Currency code lenght must be 3: "),
+    PARAMETER_NULL("0001", "Input can't be null: "),
+    CURRENCY_CODE_LEN("0002", "Currency code length must be 3: "),
     DATE_FORMAT("0003", "Date format must be yyyy-mm-dd but found: "),
     PAGE_NO_NEGATIVE_OR_ZERO("0004", "pageNumber must be a positive number but found: "),
     REST_API("0005", "RatesApi exception: "),

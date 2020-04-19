@@ -83,6 +83,7 @@ public class ConversionService {
     public ConversionResponseDto calculateConversion(ConversionRequestDto requestDto) {
 
         logger.info("getConversion() called, requestDto:{}", requestDto);
+        conversionValidator.validateConversionRequestParameters(requestDto);
 
         Conversion conversion = calculate(requestDto);
 

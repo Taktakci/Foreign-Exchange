@@ -55,7 +55,7 @@ class ConversionServiceTest {
         ConversionRequestDto requestDto = new ConversionRequestDto();
         requestDto.setSourceCurrency("USD");
         requestDto.setTargetCurrency("GBP");
-        requestDto.setSourceAmount(100L);
+        requestDto.setSourceAmount(100d);
 
         ExchangeRateResponseDto mockDto = new ExchangeRateResponseDto();
         mockDto.setRate(1.2);

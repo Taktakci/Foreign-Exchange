@@ -1,7 +1,7 @@
 package com.taktakci.exchange.rest.validator;
 
 import com.taktakci.exchange.exception.CurrencyCodeLengthException;
-import com.taktakci.exchange.exception.PathParamNullException;
+import com.taktakci.exchange.exception.ParameterNullException;
 import com.taktakci.exchange.logging.LogFactory;
 import com.taktakci.exchange.logging.LogUtil;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ public class ExchangeRateValidator {
         logger.info("validateCurrencies() started");
         if (sourceCurrency == null) {
             logger.error("sourceCurrency cannot be null");
-            throw PathParamNullException.create("sourceCurrency");
+            throw ParameterNullException.create("sourceCurrency");
         }
         if (targetCurrency == null) {
             logger.error("targetCurrency cannot be null");
-            throw PathParamNullException.create("targetCurrency");
+            throw ParameterNullException.create("targetCurrency");
         }
         if (sourceCurrency.length() != 3) {
             logger.error("sourceCurrency length must be 3 but found {} for {}", sourceCurrency.length(), sourceCurrency);
