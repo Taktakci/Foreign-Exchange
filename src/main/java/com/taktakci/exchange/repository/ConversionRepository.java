@@ -57,7 +57,7 @@ public class ConversionRepository {
     public List<Conversion> findByTransactionDate(String transactionDate, Integer page) {
         LocalDate localDate = stringToLocalDate(transactionDate);
         int pageNumber = page == null ? 1 : page;
-        return entityManager.createQuery("Select c from Conversion c where c.transactionDate = :transactionDate", Conversion.class)
+        return entityManager.createQuery("Select c from Conversion c where c.transactionDate = :transactionDate order by c.transactionId asc", Conversion.class)
                 .setFirstResult((pageNumber-1) * PAGE_SIZE)
                 .setMaxResults(PAGE_SIZE)
                 .setParameter("transactionDate", localDate)
